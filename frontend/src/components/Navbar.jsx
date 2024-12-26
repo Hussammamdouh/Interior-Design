@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
-const Navbar = ({ user, onLogout }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsLoggedIn(!!user);
-  }, [user]);
+  const handleLogout = () => {
+    logout(); // Clear user state and localStorage
+    navigate("/login"); // Redirect to login page
+  };
+  console.log("User object in Navbar:", user);
 
   return (
     <nav className="sticky top-0 bg-[#181818] text-[#E5CBBE] shadow-md z-50">
@@ -18,12 +22,12 @@ const Navbar = ({ user, onLogout }) => {
 
         {/* Middle: User Info or Login */}
         <div className="flex items-center space-x-4">
-          {isLoggedIn ? (
+          {user ? (
             <>
-              <span className="text-lg font-medium">Hello, {user.firstName}</span>
+              Hello, {user?.name?.split(" ")[0] || "Guest"}
               <button
                 className="text-lg border border-[#E5CBBE] px-4 py-2 rounded-[12px] hover:text-[#A58077] hover:border-[#A58077] hover:bg-[#E5CBBE] transition-all"
-                onClick={onLogout}
+                onClick={handleLogout}
               >
                 Logout
               </button>
@@ -40,10 +44,7 @@ const Navbar = ({ user, onLogout }) => {
 
         {/* Right: Navigation Links */}
         <div className="flex space-x-6">
-          <Link
-            to="/"
-            className="text-lg hover:text-[#A58077] transition-all"
-          >
+          <Link to="/" className="text-lg hover:text-[#A58077] transition-all">
             Home
           </Link>
           <Link

@@ -16,13 +16,22 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, formData);
+  
+      // Save the auth token or user data in localStorage
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data)); // Save user data
+  
       alert('Login successful!');
       console.log(response.data);
+  
+      // Redirect to home or another page
+      window.location.href = '/';
     } catch (error) {
       alert('Error logging in. Please try again.');
       console.error(error);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-[#181818] flex items-center justify-center relative">
