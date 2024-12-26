@@ -19,15 +19,32 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+  
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      phone: formData.phone,
+    };
+  
+    console.log('Payload:', payload); // Debugging
+  
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, payload);
       alert('Account created successfully!');
       console.log(response.data);
     } catch (error) {
-      alert('Error creating account. Please try again.');
-      console.error(error);
+      console.error('Error:', error.response ? error.response.data : error.message);
+      alert(error.response?.data?.message || 'An error occurred while registering.');
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-[#181818] flex items-center justify-center relative">

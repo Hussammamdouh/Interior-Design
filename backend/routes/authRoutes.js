@@ -69,5 +69,7 @@ router.post('/register', validate(registerSchema), registerUser);
  *         description: Invalid credentials
  */
 router.post('/login', validate(loginSchema), loginUser);
+console.log('Auth routes loaded');
+
 
 module.exports = router;
