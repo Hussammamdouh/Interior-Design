@@ -1,13 +1,17 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const connectDB = require('./config/db');
-const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
-const authRoutes = require('./routes/authRoutes');
+const swaggerUi = require('swagger-ui-express');
 const errorHandler = require('./middlewares/errorHandler');
-const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const designRoutes = require('./routes/designRoutes');
+const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+
+
 
 
 const app = express();
@@ -26,7 +30,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/auth', authRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/design', designRoutes);
-
+app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);
